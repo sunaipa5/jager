@@ -8,8 +8,7 @@ import (
 )
 
 func IsJSON(data []byte) bool {
-	var js json.RawMessage
-	return json.Unmarshal(data, &js) == nil
+	return json.Valid(data)
 }
 
 // Convert struct to json and write response
