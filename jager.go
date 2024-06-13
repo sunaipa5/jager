@@ -12,14 +12,14 @@ func IsJSON(data []byte) bool {
 }
 
 // Convert struct to json and write response
-func Struct(w http.ResponseWriter, getJson interface{}) error {
-	jsonData, err := json.Marshal(getJson)
+func Struct(w http.ResponseWriter, jsonData interface{}) error {
+	encodedJson, err := json.Marshal(jsonData)
 	if err != nil {
 		return err
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(jsonData)
+	w.Write(encodedJson)
 	return nil
 }
 
@@ -50,7 +50,7 @@ func Read(w http.ResponseWriter, r *http.Request) ([]byte, error) {
 // Convert string to json and write response
 /* Sample:
 
-jager.String(`{"name":"john","surname":"doe"}`)
+jager.String(w,`{"name":"john","surname":"doe"}`)
 
 */
 func String(w http.ResponseWriter, input string) error {
