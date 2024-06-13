@@ -37,6 +37,10 @@ func Read(w http.ResponseWriter, r *http.Request) ([]byte, error) {
 		return nil, err
 	}
 
+	if len(body) == 0 {
+		return nil, fmt.Errorf("request body empty")
+	}
+
 	jsonCheck := IsJSON(body)
 	if jsonCheck {
 		return body, nil
@@ -45,7 +49,11 @@ func Read(w http.ResponseWriter, r *http.Request) ([]byte, error) {
 }
 
 // Convert string to json and write response
-// Sample {"name":"john","surname":"doe"}
+/* Sample:
+
+jager.String(`{"name":"john","surname":"doe"}`)
+
+*/
 func String(w http.ResponseWriter, input string) error {
 	var jsonMap map[string]interface{}
 	err := json.Unmarshal([]byte(input), &jsonMap)
@@ -65,6 +73,16 @@ func String(w http.ResponseWriter, input string) error {
 }
 
 // Create a json with map and write response
+/* Sample:
+
+jager.Map(w, map[string]interface{}{
+	"name":      "John",
+	"surname":   "Doe",
+	"age":       30,
+	"isStudent": true,
+})
+
+*/
 func Map(w http.ResponseWriter, data map[string]interface{}) error {
 	jsonData, err := json.Marshal(data)
 	if err != nil {
